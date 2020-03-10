@@ -1,0 +1,582 @@
+$font-color_default: #444;;
+$color_corp: #fff;
+$font-color_sub1: #999;
+$font-color_sub2: #f2f2f2;
+
+
+$site-width: 980px;
+
+$font-size_s: 12px;
+$font-size_m: 14px;
+$font-size_default: 16px;
+$font-size_l: 18px;
+$font-size_xl: 24px;
+$font-size_xxl: 30px;
+$font-size_3l: 38px;
+
+$space_s: 5px;
+$space_m: 10px;
+$space_l: 15px;
+$space_xl: 20px;
+$space_xxl: 30px;
+$space_3l: 40px;
+$space_header: 60px;
+
+$font-family:'Libre Baskerville', serif;
+
+
+// マップ型変数を使うと便利
+$breakpoints: (
+  'sm': 'screen and (max-width: 768px)',
+  'md': 'screen and (max-width: 1000px)',
+  'lg': 'screen and (max-width: 1200px)',
+) !default;
+
+// ==============================
+// mixin
+// ==============================
+// @mixinは関数のようなものを作れる
+// https://www.webcreatorbox.com/tech/sass-mixin
+// map-get()の第一引数に変数名、第二引数にマップ型のキーを渡すと、マップ型の値が返る
+// #{}は「インターポーレーション」といって、演算できない箇所、変数使えない箇所でも使えるようにするものcalcなどでよく使う
+// http://book.scss.jp/code/c4/08.html
+@mixin mq($breakpoint: sm) {
+  @media #{map-get($breakpoints, $breakpoint)} {
+    @content;
+  }
+}
+
+@mixin md($breakpoint: md) {
+  @media #{map-get($breakpoints, $breakpoint)} {
+    @content;
+  }
+}
+
+
+
+// ==================================
+// base
+// ==================================
+html, body {
+  width: 100%;
+  height: 100%;
+  color: $font-color_default;
+  font-size: $font-size_default;
+  line-height: 1.6;
+  text-size-adjust: 100%;
+  letter-spacing: 0.1em;
+  font-family:$font-family;
+}
+p, a {
+  -webkit-font-smoothing: antialiased;
+}
+a {
+  color: $font-color_default;
+  text-decoration: none;
+  transition: .3s;
+}
+a:hover {
+  transition: .3s;
+}
+img {
+  width: 100%;
+  vertical-align: bottom;
+}
+
+// ==============================
+// container
+// ==============================
+.container {  
+  width: $site-width;
+  overflow: hidden;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 80px;
+  padding-bottom: 120px;
+  @include mq() {
+    width: 100%;
+  }
+  @include md() {
+    width: 100%;
+  }
+
+  &-title {
+    text-align: center;
+    font-size: $font-size_3l;
+    margin-bottom: $space_3l;
+    border-bottom:$font-color_sub1 solid 1px ;
+    @include mq() {
+      width: 60%;
+      margin: auto;
+      font-size:$font-size_xl;
+      margin-bottom: $font-size_xl;
+    }
+  }
+
+  &-body {
+    @include mq() {
+      padding-left: $space_l;
+      padding-right: $space_l;
+    }
+  } 
+}
+// ==================================
+// header
+// ==================================
+.header {
+  width: 100%;
+  position: fixed;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+background: rgba(255,255,255,.8);
+z-index: 1;
+&.float-active {
+  transition: .3s;
+  background:$color_corp;
+}
+@include mq() {
+
+}
+&-logo {
+margin: 20px;
+br{
+  display: none;
+  @include mq() {
+display: inline;
+  }
+}
+}
+&-menu {
+  display: flex;
+  justify-content: center;
+}
+&-tel {
+  margin: 20px;
+  //z-index: 1;//上にする
+  @include mq() {
+    margin: initial;
+  }
+}
+}
+
+
+// ==============================
+// nav-menu
+// ==============================
+.menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  margin: 0 auto;
+  @include mq() {
+    display: inline;
+
+    }
+
+&-item {
+  text-align: center; 
+  line-height: 60px;
+  @include mq() {
+    margin-top: 20px;
+    }
+  }
+&-list {
+  display: inline-block;
+  width: 100px;
+  @include mq() {
+    width: 100%;
+    font-size: 20px;
+    }
+&:hover {
+  opacity: 0.6;
+}
+}
+}
+
+
+.nav-menu {
+  margin: 0 auto;
+@include mq() {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: -100%;
+  background: rgba(255, 255, 255, .85);
+  width: 100%;
+  height: 100vh;
+  padding-top: 50px;
+  transition: .5s;
+  &.active {
+    transition: .5s;//速さ
+    transform: translateX(-100%);//右から左に移動
+    z-index: 2;//上にする
+  }
+  }
+}
+
+
+
+.menu-trigger {
+  display: none;
+  @include mq() {
+    display: inline-block;//出現させる
+  }
+  transition: all .4s;
+  box-sizing: border-box;
+  position: relative;
+  width: 40px;
+  height: 32px;
+  z-index: 3;
+  span {
+    display: inline-block;
+    transition: all .4s;
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: $font-color_default;
+    border-radius: 4px;
+    &:nth-of-type(1) {
+      top: 0;
+    }
+    &:nth-of-type(2) {
+      top: 14px;
+    }
+    &:nth-of-type(3) {
+      bottom: 0;
+    }
+  }
+  &.active span {//1本目
+    &:nth-of-type(1) {
+      transform: translateY(12px) rotate(-45deg);
+    }
+    &:nth-of-type(2) {//２本目
+      opacity: 0;//見えなくする
+    }
+    &:nth-of-type(3) {//３本目
+      transform: translateY(-15px) rotate(45deg);
+    }
+  }
+}
+
+// ==============================
+// hero
+// ==============================
+.hero {
+  background-image: url('../images//13.jpeg');
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 820px;
+  background-size: cover;
+  }
+  //==============================
+// consept
+// ==============================
+.concept{
+  color:$font-color_sub1 ;
+  width: 50%;
+  margin: auto;
+}
+
+//==============================
+// info
+// ==============================
+.info{
+width: 80%;
+margin: auto;
+@include mq() {
+  width: 100%;
+  overflow-x: scroll;
+}
+&-date {
+    color: $font-color_sub1;
+    @include mq() {
+      font-size: 3px;
+      color: $font-color_sub2;
+    }
+  }
+  &-text {
+    padding: 0px 12px 12px 0px;
+    @include mq() {
+      font-size: 5px;
+      width: 50%;
+    }
+    }
+  }
+// ==============================
+// card
+// ==============================
+.card {
+  margin-right: $space_l;
+  box-sizing: border-box;
+  &-hover {
+    display: inline-block;
+    transition: .5s;
+    &:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+      transition: .5s;
+    }
+  }
+  &-title {
+    font-size: $font-size_m;
+    font-weight: bold;
+    padding:$space_l;
+    text-align: center;
+  }
+  &-text {
+    font-size:$font-size_s;
+    margin-bottom: 20px;
+    padding:$space_l;
+    @include mq() {
+    text-align: center;
+    }
+  }
+  &-img  {
+    padding: $space_l;
+    background-color: $color_corp;
+  }
+  &-group-flex {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -$space_l;
+  }
+  &-gallery {
+    width: calc(25% - 15px);
+    @include mq() {
+      width:  calc(50% - 15px);
+    }
+    margin-bottom: 15px;
+   img {
+     height: 180px;
+    }
+  }
+  &-salon{
+    width: calc(33.3% - 15px);
+    @include mq() {
+      width: 100%;
+    }
+    }
+  &-price {
+    width: calc(50% - 15px);
+    @include mq() {
+      width: calc(100% - 15px);
+    }
+  }
+  &-insta {
+    width: calc(25% - 15px);
+  img {
+    height: 150px;
+  }
+  }
+  &-modal {
+    width: calc(100% - 15px);
+  }
+
+
+  }
+  // ==============================
+//footer
+// ==============================
+footer {
+  background-color: $font-color_default;
+  color:  $color_corp;
+  background: linear-gradient(#666666, #333333);
+}
+.footer-item {
+  @include mq() {
+    text-align: center;
+  }
+}
+.footer-copyright {
+  margin-top: 50px;
+  text-align: center;
+}
+// ==============================
+//btn
+// ==============================
+.btn {
+
+&-tel {
+    font-size:$font-size_s;
+    background-color: $font-color_default;
+    border-radius: 6px;
+    color:  $color_corp;
+    border: $font-color_default solid 1px;
+    padding: $space_m $space_xl;
+    font-family: initial;
+    z-index: 2;//上にする
+    @include mq() {
+      padding: $space_l $space_l;
+      font-size: $font-size_l;
+    }
+    &:hover {
+      background-color:  $color_corp;
+    border-radius: 6px;
+    color: $font-color_default;
+    cursor: pointer;
+    ;
+    }
+    }
+    &-more {
+      width: 40%;  
+      padding:$space_l 0px;
+      border: $font-color_default solid 1px;
+      background-color:  $color_corp;
+      color:  $font-color_default ;
+      font-size:$space_xl;
+      cursor: pointer;
+      transition: all 0.3s ease 0s;
+      &:hover {
+        background-color: $font-color_default ;
+        color:  $color_corp;
+        border-bottom-color: transparent;
+      transform: translateY(0.1875em);
+      }
+    }
+  }
+  .more {
+    text-align: center;
+    margin-top: $space_3l;
+  }
+  // ==============================
+//Modal
+// ==============================
+
+.modal{
+  display: none;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  text-align: center;
+  margin: auto;
+  z-index: 2;
+}
+.modal-body{
+  left: 50%;
+  padding: 40px;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  width: 80%; 
+  height: 80%;
+  z-index: 2;
+  text-align: center;
+  margin: auto;
+}
+
+.moda-form {
+  margin: auto;
+}
+.modal-title{
+  color: #fff;
+}
+.modal-store{
+  color: #fff;
+}
+
+.modal-btn {
+  color: #fff;
+  margin: auto;
+  text-align: center;
+}
+
+.modal-cover{
+  background: rgba(0,0,0,0.8);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  display: none;
+
+}
+
+.modal-btn {
+  text-align:center;
+ color: #444;
+ background: #ffff;
+ width: 30%;
+ display:block;
+ padding: 10px 0px;
+ margin-bottom: 20px;
+ font-size: 20px;
+ &:hover {
+  cursor: pointer;
+  opacity: 0.8;
+
+ }
+ @include mq() {
+  width: 100%;
+}
+}
+
+.btn-close {
+  background: #444;
+  color: #fff;
+  border: #444 solid 2px;
+}
+
+
+
+
+  // ==============================
+//Price
+// ==============================
+.table {
+width: 100%;
+overflow-x: scroll;
+.a {
+  width: 80%;
+}
+.price {
+  box-sizing: border-box;
+  margin: $space_s;
+  width: 80%;
+&-th-1 {
+  font-size: $font-size_xl;
+  padding-top: 30px;
+  color: olivedrab;
+  font-weight: 600;
+}
+&-th {
+
+
+} 
+&-tr {
+  padding-bottom: $space_s;
+  font-size: $font-size_m;
+  color: $font-color_sub1;
+}
+&-td {
+  padding-bottom: $space_s;
+  width: 20%;
+  font-size: $font-size_s;
+  text-align: center;
+  color: $font-color_sub1;
+}
+}
+}
+  // ==============================
+//Instaagram
+// ==============================
+
+.base-color {
+  background-color:$font-color_sub2;
+  box-shadow: 0px 0px 8px 2px #ddd inset;
+  @include mq() {
+    width: 100%;
+  }
+}
+
+
+
+
