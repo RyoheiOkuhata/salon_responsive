@@ -1,0 +1,2 @@
+# salon_responsive
+yarnを使ってsassをコンパイルしたレスポンシブ対応デザインです
